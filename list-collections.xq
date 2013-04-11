@@ -4,28 +4,12 @@ xquery version "1.0-ml";
 
 (: This returns true if there are not files or subcollections in this collection :)
 declare function local:is-empty-collection($collection as xs:string) as xs:boolean {
-(: mangle collection :)
-let $_ := xdmp:log(concat("checking ", $collection, " is empty"))
-let $collection := if (starts-with($collection, "/a"))
-then ($collection)
-else concat("/a", $collection)
-let $collection := if (ends-with($collection, "/"))
-then ($collection)
-else concat($collection, "/") 
-(: let $collection := fn:concat($collection,"/") :)
-return
-
-if (
-       empty(local:get-child-resources($collection)) and 
-       empty(local:get-child-collections($collection))
-     )
-     then (xdmp:log(concat($collection, "is empty")), true())
-     else (xdmp:log(concat($collection, " is not empty")), false())
+    empty(local:get-child-resources($collection)) and empty(local:get-child-directories($collection))
 };
 
 
 (: TODO - make this get-child-directories :)
-declare function local:get-child-collections($collection as xs:string) as xs:string* {
+declare function local:get-child-directories($collection as xs:string) as xs:string* {
     (: TODO - fix this later :)
     let $collection := if (string-length($collection) eq 1)
     (: if it's a zero :)
@@ -79,7 +63,7 @@ else (concat($dbroot, "/"))
 (: Todo use subsequence($in, 1, 100) to limit the number of values in a subcollection :)
 
 let $sub-collections := 
-   for $child in local:get-child-collections($new-collection)
+   for $child in local:get-child-directories($new-collection)
    return $child
 
 let $resources :=
@@ -119,7 +103,7 @@ return
                }
         <content>
            <name rel="{$full-collection-path}/">
-            {$child}
+            {tokenize($child,"/")[last()]}
            </name>
         </content>
      </item>

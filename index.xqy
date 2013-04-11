@@ -1,16 +1,8 @@
 xquery version "1.0-ml";
-
-(:
-declare namespace xmldb = "http://exist-db.org/xquery/xmldb";
-declare namespace exist = "http://exist.sourceforge.net/NS/exist"; :) 
+ 
 declare default element namespace "http://www.w3.org/1999/xhtml";
 
-(:
-declare option exist:serialize "method=xhtml media-type=text/html omit-xml-declaration=no indent=yes 
-        doctype-public=-//W3C//DTD&#160;XHTML&#160;1.0&#160;Transitional//EN
-        doctype-system=http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd";
-:)
-let $title := 'Tree Metadata Builder | Syntactica'
+let $title := 'MarkLogic Tree View'
 
 return
 <html lang="en">
