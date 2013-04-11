@@ -8,11 +8,11 @@ var LIST_COLLECTIONS_XQUERY = "list-collections.xqy";
 
 var RESOURCE_COPY_URI = "actions/copy.xq";
 var RESOURCE_MOVE_URI = "actions/move.xq";
-var RESOURCE_CREATE_COLLECTION_URI = "actions/create.xq";
+var RESOURCE_CREATE_COLLECTION_URI = "actions/create.xqy";
 var RESOURCE_REMOVE_URI = "actions/remove.xq";
 var RESOURCE_RENAME_URI = "actions/rename.xq";
 
-// use this if you use rewrite rules to change the base href to eXist (up to /rest)
+// TODO - can this be removed - was eXist specific, I think?
 var OVERRIDE_BASE_HREF = "";
 
 /**
@@ -56,7 +56,7 @@ $(function () {
                     * Custom action <strong>Create Collection</strong> defined below:
                     */
                     createCollection: {
-                        label: "Create Collection",
+                        label: "Create Directory",
                         icon: "create", // a classname defined in the css (currently in style.css)
                         visible: function (NODE, TREE_OBJ) {
                             // this action will be disabled if more than one node is selected
