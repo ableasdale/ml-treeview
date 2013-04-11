@@ -1,29 +1,6 @@
 xquery version "1.0-ml";
 
-
-(: taken from http://www.xqueryfunctions.com/xq/functx_escape-for-regex.html :)
-declare function local:escape-for-regex($arg as xs:string?) as xs:string {
-   replace($arg,
-           '(\.|\[|\]|\\|\||\-|\^|\$|\?|\*|\+|\{|\}|\(|\))','\\$1')
-};
-
-(: Return the string after the last occurance of the delim.
-taken from http://www.xqueryfunctions.com/xq/functx_substring-after-last.html :)
-declare function local:substring-after-last($arg as xs:string?, $delim as xs:string) as xs:string {
-   replace ($arg,concat('^.*', local:escape-for-regex($delim)),'')
-};
-
-(: Return the string before the last occurance of the delim.
-taken from http://www.xqueryfunctions.com/xq/functx_substring-before-last.html :)
-declare function local:substring-before-last($arg as xs:string?, $delim as xs:string ) as xs:string {
-   if (matches($arg, local:escape-for-regex($delim)))
-   then replace($arg,
-            concat('^(.*)', local:escape-for-regex($delim),'.*'),
-            '$1')
-   else ''
- };
-
-(:  Copy a resource
+(:~  Copy a resource
 
 Checks
 1) "from" must be specified and longer then 3 characters
@@ -42,16 +19,43 @@ simple collection path or an XMLDB URI.
 
 declare variable $from as xs:string := xdmp:get-request-field('from', '');
 declare variable $to as xs:string := xdmp:get-request-field('to', '');
+ 
+
+(: taken from http://www.xqueryfunctions.com/xq/functx_escape-for-regex.html :)
+declare function local:escape-for-regex($arg as xs:string?) as xs:string {
+   replace($arg,
+           '(\.|\[|\]|\\|\||\-|\^|\$|\?|\*|\+|\{|\}|\(|\))','\\$1')
+};
+
+(: Return the string after the last occurance of the delim.
+taken from http://www.xqueryfunctions.com/xq/functx_substring-after-last.html :)
+declare function local:substring-after-last($arg as xs:string?, $delim as xs:string) as xs:string {
+   replace ($arg,concat('^.*', local:escape-for-regex($delim)),'')
+};
 
 
+(: Return the string before the last occurance of the delim.
+taken from http://www.xqueryfunctions.com/xq/functx_substring-before-last.html :)
+declare function local:substring-before-last($arg as xs:string?, $delim as xs:string ) as xs:string {
+   if (matches($arg, local:escape-for-regex($delim)))
+   then replace($arg,
+            concat('^(.*)', local:escape-for-regex($delim),'.*'),
+            '$1')
+   else ''
+ };
 
-declare function local:directory-exists($dir as xs:string) as xs:boolean {
-    (xdmp:log(concat("Checking whether ", $dir, " exists")),
-    not(empty(xdmp:directory-properties($dir))))
+
+declare function local:resource-exists($res as xs:string) as xs:boolean {
+    (xdmp:log(concat("Checking whether ", $res, " exists")),
+    (: is it a real dir or doc :)
+    not(empty(xdmp:document-properties(concat($res,'/'))/*:properties/*:directory)
+        (: not(empty(xdmp:directory-properties($res)) or doc-available($res) :)    
+    )
+    )
 };
 
 (: now do basic error checking an return a meaninful error message to the user :)
-
+(xdmp:set-response-content-type("text/html"),
 if (string-length($from) < 3)
 then
 <error>
@@ -70,17 +74,17 @@ if (contains($from, $to))
 then
     <span class="issue">The destination collection (to={$to}) may not be a subcollection of the source collection (from={$from}).</span>
 else
-    <span class="okay">
+<span class="okay">
     {
    
     (: this is where the copy gets executed
      collection-available will return true if the source is a valid collection.  :)
  
-    if (local:directory-exists($from))
+    if (local:resource-exists(local:substring-before-last($from, '/')))
         then
            (: copy from collection into to collection :)
            (: xmldb:copy($from, $to) :)
-           xdmp:log("dir exists; about to copy resource")
+           (xdmp:log(concat("Dir exists; about to copy resource to: ", $to)), xdmp:document-insert(concat($to, local:substring-after-last($from, '/')), doc($from)))
         else
             let $source-base := local:substring-before-last($from, '/')
             let $resource := local:substring-after-last($from, '/')
@@ -91,4 +95,4 @@ else
             
     }
          <strong>{$from}</strong><br />successfully copied to<br /><strong>{$to}</strong>
-    </span>
+    </span>)

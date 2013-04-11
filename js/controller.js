@@ -6,7 +6,7 @@
 // global XQuery Resources:
 var LIST_COLLECTIONS_XQUERY = "list-collections.xqy";
 
-var RESOURCE_COPY_URI = "actions/copy.xq";
+var RESOURCE_COPY_URI = "actions/copy.xqy";
 var RESOURCE_MOVE_URI = "actions/move.xq";
 var RESOURCE_CREATE_COLLECTION_URI = "actions/create.xqy";
 var RESOURCE_REMOVE_URI = "actions/remove.xq";
@@ -126,7 +126,7 @@ $(function () {
             type: "xml_flat",
             async: true,
             opts: {
-                url: LIST_COLLECTIONS_XQUERY 
+                url: LIST_COLLECTIONS_XQUERY
             }
         },
         
