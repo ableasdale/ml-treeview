@@ -60,17 +60,17 @@ return
       let $is-a-file := fn:doc-available($child)
         
    return
-     <item parent_id="0" id="xml_{$full-collection-path}">
+     <item parent_id="0">
      {if ($is-a-file)
-               then attribute {'rel'} {'file'} 
-               else () 
+               then ( attribute {'rel'} {'file'},  attribute {'id'} {concat('xml_',$child)}) 
+               else ( attribute {'id'} {concat('xml_',$full-collection-path)}) 
                }
       {if (not($is-a-file) and not(local:is-empty-collection($full-collection-path)))
                then attribute {'state'} {'closed'} 
                else () 
                }
         <content>
-           <name rel="{$full-collection-path}/">
+           <name rel="{ if ($is-a-file) then ($child) else ($full-collection-path) }"> 
             {tokenize($child,"/")[last()]}
            </name>
         </content>

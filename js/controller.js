@@ -163,14 +163,15 @@ $(function () {
             oncopy: function (NODE, REF_NODE, TYPE, TREE_OBJ, RB) {
                 var dest;
                 var src = $(NODE.innerHTML).attr('rel');
+                console.log("source rel: " + src)
                 var destAttr = $(REF_NODE.innerHTML).attr('rel');
-                //console.debug("copying to ", destAttr);
+                console.debug("copying to ", destAttr);
                 if (destAttr.indexOf(".") >= 0) {
-                    //console.log("ref node appears to be a file: " + destAttr);
+                    console.log("ref node appears to be a file: " + destAttr);
                     dest = destAttr.substring(0, destAttr.lastIndexOf("/"));
-                    // console.log("dest will be ", dest);
+                    console.log("dest will be ", dest);
                 } else {
-                    //console.log("ref node does not appear to be a file");
+                    console.log("ref node does not appear to be a file");
                     dest = destAttr;
                 }
                 ajaxManager1.add({

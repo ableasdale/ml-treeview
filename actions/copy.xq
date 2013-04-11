@@ -1,9 +1,5 @@
-xquery version "1.0";
+xquery version "1.0-ml";
 
-declare namespace request = "http://exist-db.org/xquery/request";
-declare namespace exist = "http://exist.sourceforge.net/NS/exist";
-declare namespace xmldb = "http://exist-db.org/xquery/xmldb";
-declare option exist:serialize "method=xhtml media-type=text/html indent=yes";
 
 (: taken from http://www.xqueryfunctions.com/xq/functx_escape-for-regex.html :)
 declare function local:escape-for-regex($arg as xs:string?) as xs:string {
@@ -27,7 +23,7 @@ declare function local:substring-before-last($arg as xs:string?, $delim as xs:st
    else ''
  };
 
-(:  The RESTful implementation of a copy colleciton function.
+(:  Copy a resource
 
 Checks
 1) "from" must be specified and longer then 3 characters
@@ -44,10 +40,15 @@ The collections can be specified either as a
 simple collection path or an XMLDB URI.
 :)
 
-let $from := request:get-parameter('from', '')
-let $to := request:get-parameter('to', '')
+declare variable $from as xs:string := xdmp:get-request-field('from', '');
+declare variable $to as xs:string := xdmp:get-request-field('to', '');
 
-return
+
+
+declare function local:directory-exists($dir as xs:string) as xs:boolean {
+    (xdmp:log(concat("Checking whether ", $dir, " exists")),
+    not(empty(xdmp:directory-properties($dir))))
+};
 
 (: now do basic error checking an return a meaninful error message to the user :)
 
@@ -75,15 +76,19 @@ else
     (: this is where the copy gets executed
      collection-available will return true if the source is a valid collection.  :)
  
-    if (xmldb:collection-available($from))
+    if (local:directory-exists($from))
         then
            (: copy from collection into to collection :)
-           xmldb:copy($from, $to)
+           (: xmldb:copy($from, $to) :)
+           xdmp:log("dir exists; about to copy resource")
         else
             let $source-base := local:substring-before-last($from, '/')
             let $resource := local:substring-after-last($from, '/')
+            return
+            xdmp:log("dir does not exist; need to do something here")
             (: copy the resource to the target :)
-            return xmldb:copy($source-base, $to, $resource)
+            (: return xmldb:copy($source-base, $to, $resource) :)
+            
     }
          <strong>{$from}</strong><br />successfully copied to<br /><strong>{$to}</strong>
     </span>
