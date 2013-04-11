@@ -10,26 +10,34 @@ xquery version "1.0-ml";
  : @version 0.1
  :)
 
-declare variable $collection as xs:string := xdmp:get-request-field('id', '/a/'); 
-declare variable $dbroot as xs:string := "/a";
+declare variable $dbroot as xs:string := "/a/";
+declare variable $collection as xs:string := xdmp:get-request-field('id', $dbroot); 
 
 (: This returns true if there are not files or subcollections in this collection :)
 declare function local:is-empty-collection($collection as xs:string) as xs:boolean {
     empty(local:get-child-resources($collection)) and empty(local:get-child-directories($collection))
 };
 
-declare function local:get-child-directories($collection as xs:string) as xs:string* {
-    (xdmp:log(concat("local:get-child-collections() :: ", $collection)),
-    for $x in xdmp:directory-properties($collection, "1")
+declare function local:get-child-directories($path as xs:string) as xs:string* {
+    (xdmp:log(concat("local:get-child-collections() :: ", $path)),
+    for $x in xdmp:directory-properties($path, "1")
     let $t := tokenize(xdmp:node-uri($x), "/")
     return $t[last() -1])  
 };
 
-declare function local:get-child-resources($collection as xs:string) as xs:string* {
-    (xdmp:log(concat("local:get-child-resources() :: ", $collection)),
+declare function local:get-child-resources($path as xs:string) as xs:string* {
+    (xdmp:log(concat("local:get-child-resources() :: ", $path)),
     (: TODO - cts:uris! :)
-    for $x in cts:search(doc(), cts:directory-query($collection, "1"))
+    for $x in cts:search(doc(), cts:directory-query($path, "1"))
     return xdmp:node-uri($x)) 
+};
+
+(: TODO - add sort order (ascending, desc, datetime etc.. :)
+declare function local:get-directories-and-resources($path as xs:string) as item()* {
+(: TODO use subsequence($in, 1, 100) to limit the number of values in a subcollection :)
+   for $child in (local:get-child-directories($path), local:get-child-resources($path))
+   order by $child
+   return $child
 };
 
 let $_ := xdmp:log(" ******************** START *********************************** ")
@@ -38,42 +46,26 @@ let $title := "List Collections"
 
 
 (: note that the IDs we pass to the http://www.jsTree.com library can not start with a '/' :)
-let $new-collection := if (starts-with($collection, 'xml_'))
-then (substring-after($collection, 'xml_'))
-else (concat($dbroot, "/"))
-
-(: TODO use subsequence($in, 1, 100) to limit the number of values in a subcollection :)
-
-let $sub-collections := 
-   for $child in local:get-child-directories($new-collection)
-   return $child
-
-let $resources :=
-   for $child in local:get-child-resources($new-collection)
-   return $child
-   
-let $all :=
-   for $child in ($sub-collections, $resources)
-   order by $child
-   return $child
+let $new-collection := 
+    if (starts-with($collection, 'xml_'))
+    then substring-after($collection, 'xml_')
+    else $dbroot
 
 return
 <root>
    {
-   for $child at $count in $all
-
-      let $full-collection-path := concat($new-collection, $child)
+   for $child in local:get-directories-and-resources($new-collection)
+      let $full-collection-path := concat($new-collection, $child, "/")
       (: fixme - to a test to see if we have subcollections :)
-      let $_ := xdmp:log(concat("ITEM : ", " POS : ", $child))
       let $is-a-file := fn:doc-available($child)
         
    return
-     <item parent_id="0" id="xml_{$full-collection-path}/">
+     <item parent_id="0" id="xml_{$full-collection-path}">
      {if ($is-a-file)
                then attribute {'rel'} {'file'} 
                else () 
                }
-      {if ( not($is-a-file) and not(local:is-empty-collection(concat($full-collection-path,"/"))))
+      {if (not($is-a-file) and not(local:is-empty-collection($full-collection-path)))
                then attribute {'state'} {'closed'} 
                else () 
                }

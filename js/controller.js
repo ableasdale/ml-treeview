@@ -1,11 +1,10 @@
 /**
 *  Tree Editor v0.5
-*  @author Syntactica
-*
+*  @author Alex Bleasdale
 */
 
 // global XQuery Resources:
-var LIST_COLLECTIONS_XQUERY = "list-collections.xq";
+var LIST_COLLECTIONS_XQUERY = "list-collections.xqy";
 
 var RESOURCE_COPY_URI = "actions/copy.xq";
 var RESOURCE_MOVE_URI = "actions/move.xq";
