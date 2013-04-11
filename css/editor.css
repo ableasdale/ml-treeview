@@ -1,0 +1,17 @@
+.container {
+    width : 95%;
+    margin:auto;
+}
+#left {
+    width:49%;
+    float:left;
+}
+#right {
+    width:49%;
+    float:left;
+}
+.clearboth {
+    clear:both;
+}
+
+.mode {font-weight:bold; color:maroon;}
