@@ -10,8 +10,15 @@ xquery version "1.0-ml";
  : @version 0.1
  :)
 
-declare variable $dbroot as xs:string := "/a/";
+declare variable $dbroot as xs:string := local:determine-db-root();
 declare variable $collection as xs:string := xdmp:get-request-field('id', $dbroot); 
+
+(: restricted to directories but could be changed to use different databases as required? - AND move to config module :)
+declare function local:determine-db-root() as xs:string {
+ if (xdmp:get-request-field('t') eq "s")
+ then "/src/"
+ else "/target/"
+};
 
 (: This returns true if there are not files or subcollections in this collection :)
 declare function local:is-empty-collection($collection as xs:string) as xs:boolean {
@@ -41,6 +48,7 @@ declare function local:get-directories-and-resources($path as xs:string) as item
 };
 
 let $_ := xdmp:log(" ******************** START *********************************** ")
+let $_ := xdmp:log(concat("Selected tree: ",  $dbroot ))
 let $_ := xdmp:log(concat("Module has been passed the request field: ", xdmp:get-request-field('id')))
 let $title := "List Collections"
 
