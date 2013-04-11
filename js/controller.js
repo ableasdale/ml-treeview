@@ -304,6 +304,8 @@ $(function () {
     * Display XQuery HTTP response in a Growl style notification
     */
     function growl(html) {
+        console.log("About to Growl an html response ... "),
+        console.dir(html)
         jQuery.noticeAdd({
             text: html,
             stay: false

@@ -1,5 +1,10 @@
 xquery version "1.0-ml";
  
+ 
+(: compare with 
+
+http://localhost:8080/exist/rest//db/stuff/index.xq
+:) 
 declare default element namespace "http://www.w3.org/1999/xhtml";
 
 let $title := 'MarkLogic Tree View'
