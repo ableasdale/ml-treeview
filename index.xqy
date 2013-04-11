@@ -8,14 +8,14 @@ return
 <html lang="en">
     <head>
         <title>{$title}</title>
-        <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
         
         <!-- jQuery UI Specific Components -->
         <script type="text/javascript" src="js/jquery-ui.min.js"></script> 
-        <script type="text/javascript" src="js/ui/ui.core.min.js"></script>
-        <script type="text/javascript" src="js/ui/ui.draggable.min.js"></script>
-        <script type="text/javascript" src="js/ui/ui.resizable.min.js"></script>
-        <script type="text/javascript" src="js/ui/ui.dialog.min.js"></script>
+        <script type="text/javascript" src="js/jquery.ui.core.min.js"></script>
+        <script type="text/javascript" src="js/jquery.ui.draggable.min.js"></script>
+        <script type="text/javascript" src="js/jquery.ui.resizable.min.js"></script>
+        <script type="text/javascript" src="js/jquery.ui.dialog.min.js"></script>
 
         <!-- Third Party plugins -->
         <script type="text/javascript" src="js/jquery.notice.js"></script> 
@@ -23,10 +23,10 @@ return
         <script type="text/javascript" src="js/jquery.beautyOfCode.js"></script>
         
         <!-- JSTree -->
-        <script type="text/javascript" src="jquery.tree.min.js"></script>
+        <script type="text/javascript" src="jquery.jstree.js"></script>
         <script type="text/javascript" src="lib/sarissa.js"></script>
-        <script type="text/javascript" src="plugins/jquery.tree.contextmenu.js"></script>
-        <script type="text/javascript" src="plugins/jquery.tree.xml_flat.js"></script>
+        <!-- <script type="text/javascript" src="plugins/jquery.tree.contextmenu.js"></script> -->
+        <!-- <script type="text/javascript" src="plugins/jquery.tree.xml_flat.js"></script> -->
         
         <!-- Application Controller -->
         <script type="text/javascript" src="js/controller.js"></script>

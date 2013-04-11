@@ -29,7 +29,7 @@ $(function () {
     /**
     * Rules for managing both Tree Views
     */
-    $(".treeeditor").tree({
+    $(".treeeditor").jstree({
         types: {
             /**
             * Manages the concept of a "file" leaf node.
