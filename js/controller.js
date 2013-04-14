@@ -11,7 +11,7 @@ var RESOURCE_COPY_URI = "actions/copy.xqy";
 var RESOURCE_MOVE_URI = "actions/move.xqy";
 var RESOURCE_CREATE_COLLECTION_URI = "actions/create.xqy";
 var RESOURCE_REMOVE_URI = "actions/remove.xqy";
-var RESOURCE_RENAME_URI = "actions/move.xqy";
+var RESOURCE_RENAME_URI = "actions/rename.xqy";
 
 // TODO - can this be removed - was eXist specific, I think?
 var OVERRIDE_BASE_HREF = "";
@@ -291,7 +291,7 @@ $(function() {
                         success: function (html) {
                             growl(html);
                         },
-                        url: RESOURCE_RENAME_URI + "?id=" + id + "&newname=" + newName
+                        url: RESOURCE_RENAME_URI + "?from=" + id + "&to=" + newName
                     });
                 }
             },
@@ -580,7 +580,7 @@ $(function() {
                         success: function (html) {
                             growl(html);
                         },
-                        url: RESOURCE_RENAME_URI + "?id=" + id + "&newname=" + newName
+                        url: RESOURCE_RENAME_URI + "?from=" + id + "&to=" + newName
                     });
                 }
             },
