@@ -44,7 +44,7 @@ return
     </head>
     <body>
         <div class="container">
-           <h2>Tree Editor Example</h2>
+           <h2>{$title}</h2>
            <p>Currently logged in as: <strong>{xdmp:get-current-user()}</strong>. Hold down the Control key while dragging to copy the file</p>
            <p>You are currently in <span class="mode">MOVE</span> mode</p>
            <div id="left">
