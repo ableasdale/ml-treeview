@@ -13,14 +13,10 @@ return
 <html lang="en">
     <head>
         <title>{$title}</title>
-        <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
         
         <!-- jQuery UI Specific Components -->
-        <script type="text/javascript" src="js/jquery-ui.min.js"></script> 
-        <script type="text/javascript" src="js/ui/ui.core.min.js"></script>
-        <script type="text/javascript" src="js/ui/ui.draggable.min.js"></script>
-        <script type="text/javascript" src="js/ui/ui.resizable.min.js"></script>
-        <script type="text/javascript" src="js/ui/ui.dialog.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
 
         <!-- Third Party plugins -->
         <script type="text/javascript" src="js/jquery.notice.js"></script> 
