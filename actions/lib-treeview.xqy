@@ -5,12 +5,18 @@ module namespace lib-treeview="http://www.xmlmachines.com/ml-treeview";
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
 declare function lib-treeview:resource-exists($res as xs:string) as xs:boolean {
-    (xdmp:log(concat("lib-treeview:resource-exists : Checking whether ", $res, " exists")),
-    (: is it a real dir or doc :)
-    not(empty(xdmp:document-properties(concat($res,'/'))/*:properties/*:directory)
-        (: not(empty(xdmp:directory-properties($res)) or doc-available($res) :)    
+(xdmp:log(concat("lib-treeview:resource-exists : Checking whether ", $res, " exists")),
+    
+    if (
+        some $val in ( 
+            not(empty(xdmp:document-properties(concat($res,'/'))/*:properties/*:directory)) ||
+            doc-available($res)
+        )
+        satisfies false()
     )
-    )
+    then (xdmp:log("lib-treeview:resource-exists : Resource does not exist", "error"),false())
+    else (xdmp:log("lib-treeview:resource-exists : Resource does exist, returning 'true'"),true())   
+)
 };
 
 declare function lib-treeview:safetycheck($from as xs:string, $to as xs:string) as xs:boolean {

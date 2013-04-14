@@ -10,7 +10,7 @@ var LIST_TGT_COLLECTIONS_XQUERY = "list-collections.xqy";
 var RESOURCE_COPY_URI = "actions/copy.xqy";
 var RESOURCE_MOVE_URI = "actions/move.xqy";
 var RESOURCE_CREATE_COLLECTION_URI = "actions/create.xqy";
-var RESOURCE_REMOVE_URI = "actions/remove.xq";
+var RESOURCE_REMOVE_URI = "actions/remove.xqy";
 var RESOURCE_RENAME_URI = "actions/move.xqy";
 
 // TODO - can this be removed - was eXist specific, I think?
