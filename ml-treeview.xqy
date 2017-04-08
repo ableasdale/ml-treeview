@@ -24,8 +24,9 @@ xdmp:set-response-content-type("text/html; charset=utf-8"),
     {
         for $i in xdmp:filesystem-directory(xdmp:install-directory())/dir:entry
         return if ($i/dir:type eq "file")
-        then (element li { attribute data-jstree {'{"icon" : "glyphicon glyphicon-file", "selected" : true, "opened" : true }'}, xs:string($i/dir:filename)})
-        else (element li {xs:string($i/dir:filename)})
+        then (element li { attribute data-jstree {'{"icon" : "glyphicon glyphicon-file"}'}, xs:string($i/dir:filename)})
+        else (element li { attribute data-jstree {'{"icon" : "glyphicon glyphicon-folder-close"}'}, xs:string($i/dir:filename)})
+        (: , "selected" : true, "opened" : true  :)
     }
   </ul>
 </div>
